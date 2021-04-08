@@ -1,0 +1,46 @@
+{% if section.settings.container == 'container' %}
+    {% assign container_class = 'container' %}
+{% else %}
+    {% assign container_class = 'container-fluid' %}
+{% endif %}
+
+<div class="{{ container_class }} my-5">
+    <h1>{{ page.title }}</h1>
+    {% if section.settings.show_publish_date %}
+        <small>{{ page.published_at | date: '%B %d, %Y' }}</small>
+    {% endif %}
+    
+    <div class="my-5">{{ page.content }}</div>
+</div>
+
+
+
+{% schema %}
+{
+    "name": "Page settings",
+    "settings": [
+        {
+            "type": "select",
+            "id": "container",
+            "label": "Layout",
+            "options": [
+                {
+                    "value": "container",
+                    "label": "Container"
+                },
+                {
+                    "value": "container-fluid",
+                    "label": "Container Fluid"
+                }
+            ],
+            "default": "container"
+        },
+        {
+            "type": "checkbox",
+            "id": "show_publish_date",
+            "default": true,
+            "label": "Show Publish Date"
+        }
+    ]
+}
+{% endschema %}

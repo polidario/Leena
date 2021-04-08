@@ -1,0 +1,23 @@
+<div class="container py-5 my-5">
+    <div class="login-form">
+        {% form 'create_customer' %}
+            {% include 'form-error', form: form %}
+            <h1 class="h3">Customer Register</h1>
+            
+            <label for="firtName">First Name</label>
+            <input type="text" name="customer[first_name]" class="form-control rounded-0 my-2">
+
+            <label for="lastName">Last Name</label>
+            <input type="text" name="customer[last_name]" class="form-control rounded-0 my-2">
+
+            <label for="emailAddress">Email Address</label>
+            <input type="email" name="customer[email]" class="form-control rounded-0 my-2">
+
+            <label for="password">Password</label>
+            <input type="password" name="customer[password]" class="form-control rounded-0 my-2">
+
+            <input type="submit" value="Create an account" class="btn btn-primary btn-lg w-100 rounded-0">
+        {% endform %}
+    </div>
+</div>
+

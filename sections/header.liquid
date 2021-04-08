@@ -1,0 +1,57 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand" href="#">Navbar</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                {% for link in linklists.main-menu.links %}
+                    {% assign child_list_handle = link.title | handleize %}
+                    {% if linklists[child_list_handle].links != blank %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ link.url }}">{{ link.title }}</a>
+                        </li>
+                        [{% for childlink in linklists[child_list_handle].links %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ childlink.url }}">{{ childlink.title | escape }}</a>
+                            </li>
+                        {% endfor %}]
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ link.url }}">{{ link.title }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/cart">carts</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav">
+                {% if shop.customer_accounts_enabled %}
+                    {% if customer %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ routes.account_url }}">{{ 'general.Layout.account_text' | t }}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ routes.account_logout_url }}">{{ 'general.Layout.logout_text' | t }}</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ routes.account_login_url }}">{{ 'general.Layout.login_text' | t }}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ routes.account_register_url }}">{{ 'general.Layout.register_text' | t }}</a>
+                        </li>
+                    {% endif %}
+                {% endif %}
+                <li class="nav-item">
+
+                </li>
+            </ul>
+            <form action="/search" method="GET" role="search">
+                <input type="text" name="q" value="{{ search.terms | escape }}">
+            </form>
+        </div>
+    </div>
+</nav>

@@ -1,0 +1,82 @@
+// put your styles here
+html, body {}
+
+.inner-hero-section {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 400px;
+}
+
+.inner-hero-section img,
+.inner-hero-section svg {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+    z-index: -1;
+}
+
+.login-form, .forgot-password-form {
+    width: 100%;
+    max-width: 330px;
+    margin: auto;
+}
+
+.dropup {
+    position: relative;
+    display: inline-block;
+}
+
+.localeBtn {
+    background-color: #3298DB;
+    color:#fff;
+    padding: 6px;
+    font-size: 20px;
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    border-radius: 50%;
+    max-width: 70px;
+    max-height: 70px;
+    box-shadow: -1px 0px 20px 0px #00000066;
+}
+
+.localeBtn img {
+    width: 50px;
+    height: 50px;
+}
+
+.dropup-content {
+    display: none;
+    position: fixed;
+    bottom: 80px;
+    right: 25px;
+    min-width: 210px;
+    z-index: 1;
+    background-color: #f1f1f1;
+    box-shadow: -1px 0px 20px 0px #00000066;
+}
+
+.dropup:hover .dropup-content {
+    display: block;
+}
+
+.dropup-content a {
+    color: #000;
+    font-size: 17px;
+    padding: 15px 10px;
+    display: block;
+    text-align: center;
+}
+
+#shopify-section-translation {
+    position: fixed;
+}
+
+.featured-collection-section .card {
+    z-index: -1;
+}

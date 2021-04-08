@@ -1,0 +1,46 @@
+<!-- /templates/customers/account.liquid -->
+<div class="container my-5">
+    <h1 class="mb-3">Account</h1>
+    <div class="row">
+        <div class="col-12 col-md-4">
+            <h6>Account details</h6>
+            {{ customer.default_address | format_address }}
+
+            <a href="{{ routes.account_addresses_url }}" class="btn btn-light">
+                View addresses
+                <span class="badge bg-success">{{ customer.addresses_count }}</span>
+            </a>
+        </div>
+        <div class="col-12 col-md-8">
+            <div class="customer_orders">
+                {% if customer.orders.size > 0 %}
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Order #</th>
+                                <th>Fulfillment Status</th>
+                                <th>Payment Status</th>
+                                <th>Order Date</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for order in customer.orders %}
+                                <tr>
+                                    <td>
+                                        <a href="{{ order.customer_url }}">{{ order.name }}</a>
+                                    </td>
+                                    <td><span class="badge bg-primary">{{ order.fulfillment_status_label }}</span></td>
+                                    <td><span class="badge bg-success">{{ order.financial_status_label }}</span></td>
+                                    <td>{{ order.created_at | time_tag: format: 'date' }}</td>
+                                    <td>{{ order.total_price | money }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                        
+                    </table>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>

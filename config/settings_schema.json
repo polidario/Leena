@@ -1,0 +1,60 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Leena",
+    "theme_version": "1.0.0",
+    "theme_author": "WeeklyHow",
+    "theme_documentation_url": "https://weeklyhow.com/blog",
+    "theme_support_url": "https://weeklyhow.com/contact"
+  },
+  {
+    "name": "Navigational Bar Colors Setting",
+    "settings": [
+      {
+        "type": "color",
+        "id": "navbar_color",
+        "label": "NavBar Background Colors",
+        "default": "#000"
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Heading Font Styles"
+      },
+      {
+        "type": "font_picker",
+        "id": "header_text_font",
+        "label": "Font",
+        "default": "mono"
+      },
+      {
+        "type": "header",
+        "content": "Body Font Styles"
+      },
+      {
+        "type": "font_picker",
+        "id": "body_text_font",
+        "label": "Font",
+        "default": "mono"
+      },
+      {
+        "type": "header",
+        "content": "Body Font Size"
+      },
+      {
+        "type": "range",
+        "id": "body_font_size",
+        "label": "Font Size",
+        "default": 16,
+        "unit": "px",
+        "min": 13,
+        "max": 25,
+        "step": 1
+      }
+    ]
+  }
+]

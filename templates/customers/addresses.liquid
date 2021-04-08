@@ -1,0 +1,87 @@
+<div class="container my-5">
+    <h1 class="lead">My Addresses</h1>
+    
+    <button class="btn btn-primary rounded-0" data-bs-toggle="modal" data-bs-target="#newAddressModal">Create new address</button>
+    <div class="row row-cols-md-4 row-cols-1 my-5 gx-2">
+        {% for address in customer.addresses %}
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        {{ address | format_address }}
+                    </div>
+                    <div class="card-footer">
+                        <form 
+                            action="/account/addresses/{{ address.id }}" 
+                            method="post"
+                            data-confirm-message="Delete Address"
+                        >
+                            <input type="hidden" name="_method" value="delete">
+                            <button class="btn btn-danger">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="modal fade" id="newAddressModal" tabindex="-1" aria-labelledby="newAddressModalLabel" aria-hidden="true">
+    {% form 'customer_address', customer.new_address %}
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="newAddressModalLabel">Add New Address</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="col-12 mb-3">
+                        <label for="AddressFirstNameNew" class="form-label">First Name</label>
+                        <input id="AddressFirstNameNew" type="text" name="address[first_name]" value="{{ form.first_name }}" class="form-control">
+                    </div>
+                    <div class="col-12 mb-3">
+                        <label for="AddressLastNameNew" class="form-label">Last Name</label>
+                        <input id="AddressLastNameNew" type="text" name="address[last_name]" value="{{ form.last_name }}" class="form-control">
+                    </div>
+                    <div class="col-12 mb-3">
+                        <label for="AddressCompanyNew" class="form-label">Company</label>
+                        <input id="AddressCompanyNew" type="text" name="address[company]" value="{{ form.company }}" class="form-control">
+                    </div>
+                    <div class="col-12 mb-3">
+                        <label for="AddressAddress1New" class="form-label">Address</label>
+                        <input id="AddressAddress1New" type="text" name="address[address1]" value="{{ form.address1 }}" class="form-control">
+                    </div>
+                    <div class="col-12 mb-3">
+                        <label for="AddressAddress2New" class="form-label">Apartment, Suite, etc</label>
+                        <input id="AddressAddress2New" type="text" name="address[address2]" value="{{ form.address2 }}" class="form-control">
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-12 col-md-4 mb-3">
+                            <label for="AddressCityNew" class="form-label">City</label>
+                            <input id="AddressCityNew" type="text" name="address[city]" value="{{ form.city }}" class="form-control">
+                        </div>
+                        <div class="col-12 col-md-4 mb-3">
+                            <label for="AddressCountryNew" class="form-label">Country</label>
+                            <select id="AddressCountryNew" name="address[country]" class="form-control">{{ all_country_option_tags }}</select>
+                        </div>
+                        <div class="col-12 col-md-4 mb-3">
+                            <label for="AddressProvinceNew" class="form-label">Province</label>
+                            <select id="AddressProvinceNew" name="address[province]" class="form-control" disabled="disabled"></select>
+                        </div>
+                    </div>
+                    
+                    <div class="col-12 mb-3">
+                        <label for="AddressZipNew" class="form-label">Postal/ZIP Code</label>
+                        <input id="AddressZipNew" type="text" name="address[zip]" value="{{ form.zip }}" class="form-control">
+                    </div>
+                    <div class="col-12 mb-3">
+                        <label for="AddressPhoneNew" class="form-label">Phone Number</label>
+                        <input id="AddressPhoneNew" type="text" name="address[phone]" value="{{ form.phone }}" class="form-control">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Create Address</button>
+                </div>
+            </div>
+        </div>
+    {% endform %}
+</div>

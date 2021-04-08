@@ -1,0 +1,53 @@
+<!-- /templates/customers/order.liquid -->
+<div class="container my-5">
+    <h1 class="lead">Order {{ order.name }}</h1>
+
+    <div class="row my-5">
+        <div class="col-12 col-md-4">
+            <div class="card">
+                <div class="card-header">Billing Information</div>
+                <div class="card-body">
+                    <p>Billing status: <span class="badge bg-success">{{ order.financial_status_label }}</span></p>
+                    {{ order.billing_address | format_address }}
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">Shipping Information</div>
+                <div class="card-body">
+                    <p>Fulfillment status: <span class="badge bg-success">{{ order.fulfillment_status_label }}</span></p>
+                    {{ order.shipping_address | format_address }}
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-8">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <td>Product</td>
+                        <td>SKU</td>
+                        <td>Price</td>
+                        <td>Quantity</td>
+                        <td>Total</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for line_item in order.line_items %}
+                        <tr>
+                            <td>{{ line_item.title | link_to: line_item.product.url }}</td>
+                            <td>{{ line_item.sku }}</td>
+                            <td>{{ line_item.original_price | money }}</td>
+                            <td>{{ line_item.quantity }}</td>
+                            <td>{{ line_item.line_price | money }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="4">SUBTOTAL</td>
+                        <td>{{ order.line_items_subtotal_price | money }}</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>

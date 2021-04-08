@@ -1,0 +1,20 @@
+{
+    "general": {
+      "404": {
+        "title": "Pas trouve",
+        "subtext_html": "le page introuvable"
+      },
+      "Cart": {
+        "title": "Shopping Cart"
+      },
+      "Blog": {
+        "title": "Blog"
+      },
+      "Layout": {
+        "login_text": "Compte",
+        "logout_text": "Logout",
+        "register_text": "Creer un compte",
+        "account_text": "User"
+      }
+    }
+  }

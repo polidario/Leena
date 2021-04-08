@@ -1,0 +1,61 @@
+<section class="inner-hero-section">
+    {% if section.settings.image != blank %}
+        <img src="{{ section.settings.image | img_url: 'master' }}" alt="{{ section.settings.image.alt}}">
+    {% else %}
+        {% capture current %}{% cycle 1,2 %}{% endcapture %}
+        {{ 'lifestyle-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+    {% endif %}
+    
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <h1>{{ section.settings.title }}</h1>
+                {{ section.settings.description }}
+                <a href="{{ section.settings.button_link }}" class="btn btn-secondary">{{ section.settings.button_label }}</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% schema %}
+{
+    "name": "Hero",
+    "class": "hero-section",
+    "settings": [
+        {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Heading Background Title"
+        },
+        {
+            "type": "text",
+            "id": "title",
+            "default": "Example Heading",
+            "label": "Heading Title"
+        },
+        {
+            "type": "richtext",
+            "id": "description",
+            "default": "<p>Example Paragraph</p>",
+            "label": "Heading Description"
+        },
+        {
+            "type": "text",
+            "id": "button_label",
+            "default": "Button",
+            "label": "Heading Button Label"
+        },
+        {
+            "type": "url",
+            "id": "button_link",
+            "label": "Heading Button Link"
+        }
+    ],
+    "presets": [
+        {
+            "category": "Hero",
+            "name":"Simple Hero"
+        }
+    ]
+}
+{% endschema %}

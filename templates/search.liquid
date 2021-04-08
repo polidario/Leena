@@ -1,0 +1,75 @@
+{% paginate search.results by 10 %}
+
+<div class="container my-5">
+  <div class="row">
+    <form action="/search" method="get" role="search">
+      <input class="form-control mb-4 rounded-0 form-control-lg" type="search" name="q" value="{{ search.terms | escape }}">
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" id="product_type" name="type" value="product">
+        <label class="form-check-label" for="product_type">Product</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" id="product_type" name="type" value="article">
+        <label class="form-check-label" for="product_type">Article</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" id="product_type" name="type" value="page">
+        <label class="form-check-label" for="product_type">Page</label>
+      </div>
+      <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+  </div>
+
+  <div class="row">
+    <h1 class="text-center">{{ search.results_count }} search results</h1>
+  </div>
+
+  <div class="row row-cols-3 g-2 my-5">
+    {% if search.performed %}
+      {% for item in search.results %}
+        {% if item.object_type == 'product' %}
+          <div class="col">
+            <div class="card shadow">
+              {% if item.featured_image %}
+                <a href="{{ item.url | within: collection }}" title="{{ item.title | escape }}">
+                  {{ item.featured_image.src | img_url: 'medium' | img_tag: item.featured_image.alt, 'card-img-top' }}
+                </a>
+              {% endif %}
+
+              <div class="card-body">
+                <h5>{{ item.title | link_to: item.url }}</h5>
+                <p>{{ item.content | strip_html | truncatewords: 50 }}</p>
+              </div>
+            </div>
+          </div>
+        {% else if item.object_type == 'article' %}
+          <div class="col">
+            <div class="card shadow">
+              {% if item.image %}
+                <a href="{{ item.url | within: collection }}" title="{{ item.title | escape }}">
+                  {{ item.image.src | img_url: 'medium' | img_tag: item.image.alt, 'card-img-top' }}
+                </a>
+              {% endif %}
+
+              <div class="card-body">
+                <h5>{{ item.title | link_to: item.url }}</h5>
+                <p>{{ item.content | strip_html | truncatewords: 50 }}</p>
+              </div>
+            </div>
+          </div>
+          
+        {% endif %}
+        
+        
+      {% else %}
+        no results
+      {% endfor %}
+    {% endif %}
+  </div>
+</div>
+
+<div class="row">
+  {% render 'pagination', paginate: paginate %}
+</div>
+
+{% endpaginate %}

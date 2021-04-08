@@ -1,0 +1,104 @@
+<footer class="footer-section bg-light py-5 mt-5">
+    <div class="container p-4">
+        <div class="row row-cols-1 row-cols-md-{{ section.settings.col_num }}">
+            {% for block in section.blocks %}
+                {% assign item = block.settings %}
+                {% if block.type == "link_list" %}
+                    <div class="col">
+                        <h5>{{ item.title }}</h5>
+                        {% assign footer_linklist = item.menu %}
+                        <ul class="list-unstyled text-small">
+                            {% for link in linklists[footer_linklist].links %}
+                                <li>
+                                    <a href="{{ link.url }}">{{ link.title | escape }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% else if block.type == "text" %}
+                    <div class="col">
+                        <img src="{{ item.logo | img_url: 'medium' }}" class="mb-5">
+                        <h5>{{ item.title }}</h5>
+                        <p>{{ item.description }}</p>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    {% if section.settings.enable_payment_type_icons %}
+        <div class="container justify-content-center d-flex">
+            {% for payment_type in shop.enabled_payment_types %}
+                <img src="{{ payment_type | payment_type_img_url }}">
+            {% endfor %}
+        </div>
+    {% endif %}
+    
+</footer>
+
+{{ 'bootstrap.min.js' | asset_url | script_tag }}
+{{ 'application.js' | asset_url | script_tag }}
+
+{% schema %}
+{
+    "name": "Footer",
+    "settings": [
+        {
+            "type": "range",
+            "id": "col_num",
+            "default": 3,
+            "min": 2,
+            "max": 4,
+            "label": "Number of Columns"
+        },
+        {
+            "type": "checkbox",
+            "id": "enable_payment_type_icons",
+            "label": "Enable Payment Type Icons",
+            "default": true
+        }
+    ],
+    "max_blocks": 4,
+    "blocks": [
+        {
+            "type": "link_list",
+            "name": "Navigation",
+            "settings": [
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Title",
+                    "default": "Quick Links"
+                },
+                {
+                    "type": "link_list",
+                    "id": "menu",
+                    "label": "Menu"
+                }
+                
+            ]
+        },
+        {
+            "type": "text",
+            "name": "Store details",
+            "settings": [
+                {
+                    "type": "image_picker",
+                    "id": "logo",
+                    "label": "Store Logo"
+                },
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Heading",
+                    "default": "Store information"
+                },
+                {
+                    "type": "richtext",
+                    "id": "description",
+                    "label": "Text"
+                }
+            ]
+        }
+    ]
+}
+{% endschema %}
