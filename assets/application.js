@@ -55,7 +55,11 @@ if(localeItems.length > 0) {
 
 var productInfoAnchors = document.querySelectorAll("#productInfoAnchor");
 
-var productModal = new bootstrap.Modal(document.getElementById('productInfoModal'), {});
+var productModal;
+
+if( document.getElementById('productInfoModal') != null ) {
+    productModal = new bootstrap.Modal(document.getElementById('productInfoModal'), {});
+}
 
 if(productInfoAnchors.length > 0) {
     productInfoAnchors.forEach(item => {
@@ -76,6 +80,8 @@ if(productInfoAnchors.length > 0) {
                 var variants = data.variants;
                 var variantSelect = document.getElementById("modalItemID");
 
+                variantSelect.innerHTML = '';
+
                 variants.forEach(function( variant, index) {
                     console.log(variant);
 
@@ -92,27 +98,45 @@ if(productInfoAnchors.length > 0) {
 
 var modalAddToCartForm = document.querySelector("#addToCartForm");
 
-modalAddToCartForm.addEventListener("submit", function(e) {
-    e.preventDefault();
+if( modalAddToCartForm != null ) {
+    modalAddToCartForm.addEventListener("submit", function(e) {
+        e.preventDefault();
+    
+        let formData = {
+            'items': [
+                {
+                    'id': document.getElementById("modalItemID").value,
+                    'quantity': document.getElementById("modalItemQuantity").value
+                }
+            ]
+        };
+    
+        fetch('/cart/add.js', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+        .then((resp) => { 
+            return resp.json();
+        })
+        .then((data) => {
+            update_cart();
+        })
+        .catch((err) => {
+            console.error('Error: ' + err);
+        })
+    });
+}
 
-    let formData = {
-        'items': [
-            {
-                'id': document.getElementById("modalItemID").value,
-                'quantity': document.getElementById("modalItemQuantity").value
-            }
-        ]
-    };
-
-    fetch('/cart/add.js', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData)
-    })
-    .then((resp) => resp.json())
-    .catch((err) => {
-        console.error('Error: ' + err);
-    })
+document.addEventListener('DOMContentLoaded', function() {
+    update_cart();
 });
+
+function update_cart() {
+    fetch('/cart.js')
+    .then((resp) => resp.json())
+    .then((data) => document.getElementById("numberOfCartItems").innerHTML = data.items.length)
+    .catch((err) => console.error(err));
+}
