@@ -50,8 +50,17 @@
                 </li>
             </ul>
             <form action="/search" method="GET" role="search">
-                <input type="text" name="q" value="{{ search.terms | escape }}">
+                <input type="text" name="q" value="{{ search.terms | escape }}" id="searchInputField">
             </form>
         </div>
     </div>
 </nav>
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasSearchResult" aria-labelledby="offcanvasLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="offcanvasLabel">Product Search Result</h5>
+      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body" id="search_results_body">
+    </div>
+  </div>
