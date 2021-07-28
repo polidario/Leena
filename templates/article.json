@@ -1,4 +1,5 @@
 {
+    "layout": "theme-blog-with-sidebar",
     "sections": {
         "template": {
             "type": "template-article",
@@ -17,7 +18,10 @@
                 }
             },
             "block_order": ["featured_image","title","article_meta","content"]
+        },
+        "sidebar": {
+            "type": "sidebar"
         }
     },
-    "order": ["template"]
+    "order": ["template","sidebar"]
 }

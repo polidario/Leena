@@ -8,95 +8,68 @@
 
 <article itemscope itemtype="https://schema.org/BlogPosting">
 
-  <div class="container my-5">
-    <div class="row">
-      {%- comment -%}
-        THIS COLUMN IS FOR THE CONTENT AND COMMENT SECTION
-      {%- endcomment -%}
-      <div class="col-12 col-md-8">
+  {% for block in section.blocks %}
+      {% case block.type %}
+          {% when 'featured_image' %}
+              {% if article.image != blank %}
+                  <img src="{{ article.image | img_url: 'master' }}" class="img-fluid rounded w-100 my-2">
+              {% endif %}
+          {% when 'title' %}
+              <div class="article-title my-2"><h1 class="display-4">{{ article.title }}</h1></div>
+          {% when 'article_meta' %}
+              <div class="article-meta my-2"><p class="lead">By {{ author }} published on {{ date }}</p></div>
+          {% when 'content' %}
+              <div class="my-2">{{ article.content }}</div>
+          {% else %}
+      {% endcase %}
+  {% endfor %}
 
-        {% for block in section.blocks %}
-            {% case block.type %}
-                {% when 'featured_image' %}
-                    {% if article.image != blank %}
-                        <img src="{{ article.image | img_url: 'master' }}" class="img-fluid rounded w-100 my-2">
-                    {% endif %}
-                {% when 'title' %}
-                    <div class="article-title my-2"><h1 class="display-4">{{ article.title }}</h1></div>
-                {% when 'article_meta' %}
-                    <div class="article-meta my-2"><p class="lead">By {{ author }} published on {{ date }}</p></div>
-                {% when 'content' %}
-                    <div class="my-2">{{ article.content }}</div>
-                {% else %}
-                    
-            {% endcase %}
-            
-        {% endfor %}
-
-        
-
-        
-
-        
-
-        
-
-        <div class="comment-section">
-          {% if blog.comments_enabled? %}
-            <h2>{{ number_of_comments }} comment{% if number_of_comments > 1 %}s{% endif %}</h2>
-            {% paginate article.comments by 5 %}
-              {% for comment in article.comments %}
-                <div class="card shadow rounded-0 my-3">
-                  <div class="card-header">By {{ comment.author }} on {{ comment.created_at | date: format: 'long' }}</div>
-                  <div class="card-body">
-                    <div>{{ comment.content }}</div>
-                  </div>
-                  
-                  
-                </div>
-              {% endfor %}
-                
-              {% render 'pagination' %}
-            {% endpaginate %}
-
-            <div class="my-5">
-              {% form 'new_comment', article %}
-
-                {% include 'form-error', form: form %}
-
-                <div class="my-5 p-2 bg-light">
-                    <h3 class="my-4">Comment your thoughts below</h3>
-                    <div class="form-floating my-3">
-                      <input class="form-control" type="text" name="comment[author]" id="CommentAuthor" placeholder="name" value="{{ form.author }}" autocapitalize="words">
-                      <label for="CommentAuthor">name</label>
-                    </div>
-                    
-                    <div class="form-floating my-3">
-                      <input class="form-control" type="email" name="comment[email]" id="CommentEmail" placeholder="email" value="{{ form.email }}" autocorrect="off" autocapitalize="off">
-                      <label for="CommentEmail">email</label>
-                    </div>
-                    
-                    <div class="form-floating my-3">
-                      <textarea class="form-control" name="comment[body]" id="CommentBody" placeholder="message" style="height: 120px;">{{ form.body }}</textarea>
-                      <label for="CommentBody">message</label>
-                    </div>
-                    
-      
-                    <input class="btn btn-primary" type="submit" value="post">
-                </div>
-                
-              {% endform %}
+  <div class="comment-section">
+    {% if blog.comments_enabled? %}
+      <h2>{{ number_of_comments }} comment{% if number_of_comments > 1 %}s{% endif %}</h2>
+      {% paginate article.comments by 5 %}
+        {% for comment in article.comments %}
+          <div class="card shadow rounded-0 my-3">
+            <div class="card-header">By {{ comment.author }} on {{ comment.created_at | date: format: 'long' }}</div>
+            <div class="card-body">
+              <div>{{ comment.content }}</div>
             </div>
-          {% endif %}
-        </div>
-      </div>
-      {%- comment -%}
-        THIS COLUMN IS FOR THE SIDEBAR
-      {%- endcomment -%}
-      <div class="col-12 col-md-4">{% section 'sidebar' %}</div>
-    </div>
-  </div>
+          </div>
+        {% endfor %}
+          
+        {% render 'pagination' %}
+      {% endpaginate %}
 
+      <div class="my-5">
+        {% form 'new_comment', article %}
+
+          {% include 'form-error', form: form %}
+
+          <div class="my-5 p-2 bg-light">
+              <h3 class="my-4">Comment your thoughts below</h3>
+              <div class="form-floating my-3">
+                <input class="form-control" type="text" name="comment[author]" id="CommentAuthor" placeholder="name" value="{{ form.author }}" autocapitalize="words">
+                <label for="CommentAuthor">name</label>
+              </div>
+              
+              <div class="form-floating my-3">
+                <input class="form-control" type="email" name="comment[email]" id="CommentEmail" placeholder="email" value="{{ form.email }}" autocorrect="off" autocapitalize="off">
+                <label for="CommentEmail">email</label>
+              </div>
+              
+              <div class="form-floating my-3">
+                <textarea class="form-control" name="comment[body]" id="CommentBody" placeholder="message" style="height: 120px;">{{ form.body }}</textarea>
+                <label for="CommentBody">message</label>
+              </div>
+              
+
+              <input class="btn btn-primary" type="submit" value="post">
+          </div>
+          
+        {% endform %}
+      </div>
+    {% endif %}
+  </div>
 
 </article>
 
@@ -104,6 +77,7 @@
 {
     "name": "Article Section",
     "tag": "section",
+    "class": "col-md-8 col-12",
     "blocks": [
         {
             "type": "featured_image",
