@@ -1,0 +1,101 @@
+<div class="container my-5">
+    {% if cart.item_count > 0 %}
+
+      <div class="row">
+        <p class="h2 my-5 text-center">{{ 'general.Cart.title' | t }}</p>
+      </div>
+      <div class="my-5">
+        <form action="/cart" method="POST" class="row" novalidate>
+            <div class="col-12 col-md-8">
+              <div class="card shadow">
+                <div class="card-body">
+                    <table class="table table-borderless">
+                        <thead>
+                          <th colspan="2">Prod</th>
+                          <th>Price</th>
+                          <th>Qty</th>
+                          <th>total</th>
+                        </thead>
+                        <tbody>
+                          {% for item in cart.items %}
+                            <tr>
+                              <td>
+                                <a href="{{ item.url | within: collections.all }}">
+                                  <img src="{{ item | img_url: 'small' }}" alt="{{ item.title | escape }}">
+                                </a>
+                              </td>
+                              <td>
+                                <a href="{{ item.url }}">{{ item.product.title }}</a>
+                                <p class="small">{{ item.variant.title }}</p>
+                                <a href="/cart/change?line={{ forloop.index }}&amp;quantity=0">remove</a>
+                              </td>
+                              <td>{{ item.price | money }}</td>
+                              <td>
+                                <input type="number" name="updates[]" id="updates_{{ item.key }}" value="{{ item.quantity }}" min="0">
+                              </td>
+                              <td>
+                                {% if item.original_line_price != item.line_price %}{{ item.original_line_price | money }}{% endif %}
+                                {{ item.line_price | money }}
+                                {% for discount in item.discounts %}{{ discount.title }}{% endfor %}
+                              </td>
+                            </tr>
+                          {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="card shadow">
+                    <div class="card-body">
+
+                        {% for block in section.blocks %}
+                            {% case block.type %}
+                                {% when 'cart_total' %}
+                                    <div class="cart-total-block">
+                                        <p class="h3">The total amount is</p>
+                                        <p>{{ cart.total_price | money }}</p>
+                                    </div>
+                                {% when 'cart_checkout_button' %}
+                                    <div class="cart-checkout-buttons d-grid gap-2">
+                                        <button type="submit" class="btn btn-primary" name="update">Update</button>
+                                        <button type="submit" class="btn btn-primary" name="checkout">Checkout</button>
+                                    </div>
+                                    
+                                {% else %}
+                            {% endcase %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </form>
+      </div>
+
+  {% else %}
+
+    <div class="row">
+      <h2 class="text-center">{{ 'general.Cart.title' | t }}</h2>
+      <p class="text-center">Cart is empty</p>
+    </div>
+
+  {% endif %}
+</div>
+
+{% schema %}
+{
+    "name": "Template Cart",
+    "tag": "section",
+    "blocks": [
+        {
+            "type": "cart_total",
+            "name": "Cart Total",
+            "limit": 1
+        },
+        {
+            "type": "cart_checkout_button",
+            "name": "Cart Buttons",
+            "limit": 1
+        }
+    ]
+}
+{% endschema %}

@@ -1,0 +1,17 @@
+{
+    "sections": {
+        "template": {
+            "type": "template-cart",
+            "blocks": {
+                "cart_total": {
+                    "type": "cart_total"
+                },
+                "cart_buttons": {
+                    "type": "cart_checkout_button"
+                }
+            },
+            "block_order": ["cart_total","cart_buttons"]
+        }
+    },
+    "order": ["template"]
+}
