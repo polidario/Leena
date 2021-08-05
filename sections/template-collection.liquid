@@ -1,0 +1,80 @@
+<div class="container">
+    {% paginate collection.products by 2 %}
+      <div class="row my-5">
+        <h1 class="text-center">{{ collection.title }}</h1>
+      </div>
+  
+      <div class="row justify-content-center">
+        <select name="sorting" id="sort_by" class="form-select form-select-sm w-25">
+          {% for option in collection.sort_options %}
+            <option value="{{ option.value }}" 
+                {% if option.value == collection.sort_by %}
+                  selected
+                {% endif %}
+            >{{ option.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      
+      <div class="row justify-content-center my-5">
+        {% for product in collection.products %}
+          {% assign image = product.featured_media.preview_image %}
+          <div class="col-3 g-2">
+            <div class="card" style="width: 18rem;">
+                {% if image != blank %}
+                    <a href="#" id="productInfoAnchor" product-handle="{{ product.handle }}" product-price="{{ product.price | money_without_trailing_zeros }}">
+                      <img class="card-img-top" src="{{ image | img_url: 'medium' }}" alt="{{ product.title }}">
+                    </a>
+                    {% else %}
+                        {{ 'product-1' | placeholder_svg_tag: 'card-img-top' }}
+                {% endif %}
+                
+                <div class="card-body">
+                    <h3><a href="{{ product.url }}">{{ product.title }}</a></h3>
+                    <p>{{ product.price | money_without_trailing_zeros }}</p>
+                </div>
+            </div>
+          </div>
+  
+        {% else %}
+          <p>no matches</p>
+        {% endfor %}
+      </div>
+      
+  
+  
+      {% render 'pagination', paginate: paginate %}
+  
+    {% endpaginate %}
+  </div>
+  
+  
+  <div class="modal fade" id="productInfoModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-12 col-md-6">
+              <img class="img-fluid" src="" id="productInfoImg" alt="">
+            </div>
+            <div class="col-12 col-md-6">
+              <h1 id="productInfoTitle"></h1>
+              <h3 id="productInfoPrice"></h3>
+              <p id="productInfoDescription"></p>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <form action="#" id="addToCartForm" class="row">
+            <select name="id" id="modalItemID" class="form-select col-auto">
+            </select>
+            <input type="number" name="quantity" value="1" id="modalItemQuantity" min="1" class="col-auto">
+            <button type="submit" class="btn btn-success col-auto">Add to cart</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
