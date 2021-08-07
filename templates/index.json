@@ -1,0 +1,22 @@
+{
+    "sections": {
+        "hero": {
+            "type": "hero",
+            "settings": {
+                "image": "",
+                "title": "Welcome To Elena",
+                "description": "<p>We are happy to welcome you to our official store</p>",
+                "button_label": "Learn more",
+                "button_link": "https:\/\/google.com\/"
+            }
+        },
+        "featured-collection": {
+            "type": "featured-collection",
+            "settings": {
+                "featured_collection": "summer-collection",
+                "title": "Featured Summer Collection"
+            }
+        }
+    },
+    "order": ["hero","featured-collection"]
+}
