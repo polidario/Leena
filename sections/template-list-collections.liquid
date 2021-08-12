@@ -1,0 +1,33 @@
+<div class="container my-5">
+    {% for collection in collections %}
+      {% if collection.handle != 'frontpage' %}
+        {% assign collection_title = collection.title | escape %}
+  
+        <div class="row my-3">
+          <h1 class="text-center">{{ collection_title }}</h1>
+        </div>
+  
+        <div class="row justify-content-center my-4">
+          {% for product in collection.products limit: 5 %}
+            {% assign image = product.featured_media.preview_image %}
+            <div class="col-3 g-2">
+              <div class="card" style="width: 18rem;">
+                <img src="{{ image | img_url: 'medium' }}" alt="{{ product.title }}" class="card-img-top">
+                <div class="card-body">
+                  <h3><a href="{{ product.url }}">{{ product.title }}</a></h3>
+                  <p>{{ product.price | money_without_trailing_zeros }}</p>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+  
+        <div class="row my-3">
+          <a href="{{ collection.url }}" class="btn btn-primary btn-lg">More {{ collection_title }}</a>
+        </div>
+        
+      {% endif %}
+      
+    {% endfor %}
+  </div>
+  
