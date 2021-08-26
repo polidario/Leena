@@ -1,0 +1,18 @@
+{
+    "sections": {
+        "template": {
+            "type": "template-page-faq",
+            "blocks": {
+                "new-faq-item": {
+                    "type": "faq",
+                    "settings": {
+                        "title": "How to create a block for this page template?",
+                        "answer": "<p>To create a block, you can open your cuztomizer or your theme editor and then navigate to your FAQ page and there you should be able to create an FAQ item</p>"
+                    }
+                }
+            },
+            "block_order": ["new-faq-item"]
+        }
+    },
+    "order": ["template"]
+}
