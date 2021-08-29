@@ -5,12 +5,19 @@
 {% endif %}
 
 <div class="{{ container_class }} my-5">
-    <h1>{{ page.title }}</h1>
-    {% if section.settings.show_publish_date %}
-        <small>{{ page.published_at | date: '%B %d, %Y' }}</small>
-    {% endif %}
-    
-    <div class="my-5">{{ page.content }}</div>
+    {% for block in section.blocks %}
+        {% case block.type %}
+            {% when 'page_title' %}
+                <h1>{{ page.title }}</h1>
+            {% when 'page_date' %}
+                {% if section.settings.show_publish_date %}
+                    <small>{{ page.published_at | date: '%B %d, %Y' }}</small>
+                {% endif %}
+            {% when 'page_content' %}
+                <div class="my-5">{{ page.content }}</div>
+            {% else %}
+        {% endcase %}
+    {% endfor %}
 </div>
 
 
@@ -40,6 +47,23 @@
             "id": "show_publish_date",
             "default": true,
             "label": "Show Publish Date"
+        }
+    ],
+    "blocks": [
+        {
+            "type": "page_title",
+            "name": "Title",
+            "limit": 1
+        },
+        {
+            "type": "page_date",
+            "name": "Date",
+            "limit": 1
+        },
+        {
+            "type": "page_content",
+            "name": "Content",
+            "limit": 1
         }
     ]
 }
