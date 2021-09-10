@@ -1,7 +1,7 @@
 {% assign current_product = product.selected_or_first_available_variant %}
 {% assign product_image = current_product.featured_image | default: product.featured_image %}
 
-<div class="container">
+<div class="container my-5">
     <div class="row">
         <div class="col-md-6 col-12">
             <img class="img-fluid" src="{{ product_image | img_url: 'large' }}" alt="{{ product_image.alt }}" id="ProductMainImage">
@@ -10,88 +10,97 @@
             {% endfor %}
         </div>
         <div class="col-md-6 col-12">
-            <h1>{{ product.title }}</h1>
-            <p>{{ current_product.price | money_with_currency }}</p>
-
-            {% form 'product', product, class:"product-form", id:"AddToCartForm" %}
-                <div class="mb-3">
-                  <select name="id" id="productSelect" class="form-select">
-                    {% for variant in product.variants %}
-                      {% if variant.available %}
-                        <option value="{{ variant.id }}">
-                          {{ variant.title }}
-                        </option>
-                      {% else %}
-                        <option value="{{ variant.id }}" disabled="disabled">
-                          {{ variant.title }}
-                        </option>
-                      {% endif %}
-                      
-                    {% endfor %}
-                  </select>
-                </div>
-                <div class="mb-3">
-                  <input type="number" class="form-control" name="quantity" id="Quantity" value="1" min="1">
-                </div>
-
-                <button type="submit" name="add" id="AddToCard" class="btn btn-secondary btn-lg w-100 rounded-0">Add To Cart</button>
-            
-                {% if section.settings.dynamic_buttons_checkbox == true %}
-                    {{ form | payment_button }}
-                {% endif %}
+          {% form 'product', product, class:"product-form", id:"AddToCartForm" %}
+              {% for block in section.blocks %}
+                {% case block.type %}
+                  {% when 'title' %}
+                    <h1>{{ product.title }}</h1>
+                  {% when 'price' %}
+                    <p>{{ current_product.price | money_with_currency }}</p>
+                  {% when 'variant_selector' %}
+                    <div class="mb-3">
+                      <label for="productSelect" class="form-label">Size</label>
+                      <select name="id" id="productSelect" class="form-select">
+                        {% for variant in product.variants %}
+                          {% if variant.available %}
+                            <option value="{{ variant.id }}">
+                              {{ variant.title }}
+                            </option>
+                          {% else %}
+                            <option value="{{ variant.id }}" disabled="disabled">
+                              {{ variant.title }}
+                            </option>
+                          {% endif %}
+                          
+                        {% endfor %}
+                      </select>
+                    </div>
+                  {% when 'quantity' %}
+                    <div class="mb-3">
+                      <label for="Quantity" class="form-label">Quantity</label>
+                      <input type="number" class="form-control" name="quantity" id="Quantity" value="1" min="1">
+                    </div>
+                  {% when 'checkout_buttons' %}
+                    <button type="submit" name="add" id="AddToCard" class="btn btn-secondary btn-lg w-100 rounded-0">Add To Cart</button>
                 
-            {% endform %}
+                    {% if section.settings.dynamic_buttons_checkbox == true %}
+                        {{ form | payment_button }}
+                    {% endif %}
+                  {% when 'description' %}
+                    <p>{{ product.description }}</p>
+                  {% else %}
+                    
+                {% endcase %}
+              {% endfor %}
+                
+          {% endform %}
         </div>
     </div>
 </div>
 
-<div class="container">
-  <section id="product_recommendation" class="row content-justify-center my-5">
-    <div class="text-center"><h1>You may also like this</h1></div>
-    <div id="product_recommendation_body">
 
-    </div>
-  </section>
-</div>
-
-<script>
-  var productRecommendationBody = document.getElementById('product_recommendation_body');
-
-  fetch('/recommendations/products.json?product_id={{ product.id }}')
-  .then(resp => resp.json())
-  .then(({ products }) => {
-    console.log(products);
-
-    if(products.length > 0) {
-      products.forEach(function(product, index) {
-        var card;
-
-        card = '<div class="col-3 g-2">';
-        card += '<div class="card" style="width: 18rem;">';
-        
-        if(product.images.length > 0) {
-          card += '<img class="card-img-top" src="' + product.images[0] + '">';
-        }
-
-        card += '<div class="card-body">';
-        card += '<h3><a href="' + product.url + '">' + product.title + '</a></h3>';
-        card += '</div></div></div>';
-
-        productRecommendationBody.innerHTML += card;
-      });
-    }
-  });
-</script>
 
 {% schema %}
 {
-    "name": "Product pages",
+    "name": "Product",
     "settings": [
         {
             "type": "checkbox",
             "id": "dynamic_buttons_checkbox",
             "label": "Enable Dynamic Buttons",
             "default": false
+        }
+    ],
+    "blocks": [
+        {
+          "type": "title",
+          "name": "Title",
+          "limit": 1
+        },
+        {
+          "type": "price",
+          "name": "Price",
+          "limit": 1
+        },
+        {
+          "type": "variant_selector",
+          "name": "Variant Selector",
+          "limit": 1
+        },
+        {
+          "type": "quantity",
+          "name": "Quantity",
+          "limit": 1
+        },
+        {
+          "type": "checkout_buttons",
+          "name": "Checkout Buttons",
+          "limit": 1
+        },
+        {
+          "type": "description",
+          "name": "Description",
+          "limit": 1
         }
     ]
 }
